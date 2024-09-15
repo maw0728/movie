@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: movie
+
+  # database connect
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://172.21.151.128:3306/movie
+    username: root
+    password: movie_secret
