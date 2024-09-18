@@ -15,7 +15,6 @@ public class GenresService {
     private final GenresMapper genresMapper;
 
     public List<GenresDtoRes> genresList(String language) {
-        LanguageUtil languageUtil1 = new LanguageUtil();
-        return genresMapper.genresList(languageUtil1.hasServiceLanguage(language));
+        return genresMapper.genresList(language);
     }
 }

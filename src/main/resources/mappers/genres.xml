@@ -6,6 +6,6 @@
 
     <!--장르 전체 조회-->
     <select id="genresList" parameterType="String" resultType="com.example.movie.dto.response.GenresDtoRes">
-        SELECT genres_no as id, name_${language} as name FROM genres;
+        SELECT genres_id as id, name_${language} as name FROM genres;
     </select>
 </mapper>
