@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.movie.mapper.MovieMapper">
+
+     <!-- 영화 디테일 조회-->
+     <resultMap id="MovieDetailDtoRes" type="com.example.movie.dto.response.MovieDetailDtoRes">
+          <id property="id" column="id"/>
+          <result property="adult" column="adult"/>
+          <result property="budget" column="budget"/>
+          <result property="homepage" column="homepage"/>
+          <result property="originalTitle" column="original_title"/>
+          <result property="originCountry" column="origin_country"/>
+          <result property="originalLanguage" column="original_language"/>
+          <result property="revenue" column="revenue"/>
+          <result property="runtime" column="runtime"/>
+          <result property="status" column="status"/>
+          <result property="title" column="title"/>
+          <result property="overview" column="overview"/>
+          <result property="releaseDate" column="release_date"/>
+
+          <collection property="genres" ofType="com.example.movie.dto.response.GenresDtoRes">
+               <id property="id" column="genres_id"/>
+               <result property="name" column="genres_name"/>
+          </collection>
+     </resultMap>
+
+    <select id="movieDetail" resultMap="MovieDetailDtoRes">
+        SELECT m.movie_id           AS id
+             , m.is_adult           AS adult
+             , m.budget             AS budget
+             , m.homepage           AS homepage
+             , m.original_title     AS original_title
+             , m.origin_country     AS origin_country
+             , m.original_language  AS original_language
+             , m.revenue            AS revenue
+             , m.runtime            AS runtime
+             , m.is_status          AS status
+             , lm.title             AS title
+             , lm.overview          AS overview
+             , lm.release_date      AS release_date
+             , g.genres_id          AS genres_id
+             , g.name_${language}   AS genres_name
+        FROM movies m
+             LEFT JOIN movie.localized_movies lm
+                  ON   m.movie_id = lm.movies_id
+                  AND  lm.delete_date IS NULL
+                  AND  lm.language_code = #{language}
+             LEFT JOIN movies_genres_mapping mgm
+                  ON   m.movie_id = mgm.movies_id
+             LEFT JOIN genres g
+                  ON   mgm.genres_id = g.genres_id
+                  AND  g.delete_date IS NULL
+        WHERE m.movie_id = #{id};
+    </select>
+</mapper>

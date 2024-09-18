@@ -19,6 +19,7 @@ public class SwaggerConfig {
         return new Info()
                 .title("영화 API")
                 .description("영화 API")
+                .description("swagger 사용법을 반드시 숙지하고 이용해주세요")
                 .version("1.0.0");
     }
 }
