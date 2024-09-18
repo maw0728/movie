@@ -54,4 +54,55 @@
                   AND  g.delete_date IS NULL
         WHERE m.movie_id = #{id};
     </select>
+
+     <!--추천 영화 조회-->
+     <select id="recommendedMovieList">
+          SELECT m.movie_id                                  AS id
+               , COALESCE(lm_locale.title, lm_default.title) AS title
+          FROM movies m
+               LEFT JOIN movie.localized_movies lm_locale
+                    ON   m.movie_id = lm_locale.movies_id
+                    AND  lm_locale.delete_date IS NULL
+                    AND  lm_locale.language_code = #{language}
+               LEFT JOIN movie.localized_movies lm_default
+                    ON   m.movie_id = lm_default.movies_id
+                    AND  lm_default.delete_date IS NULL
+                    AND  lm_default.language_code = 'en'
+               LEFT JOIN movies_genres_mapping mgm
+                    ON   m.movie_id = mgm.movies_id
+               LEFT JOIN genres g
+                    ON   mgm.genres_id = g.genres_id
+                    AND  g.delete_date IS NULL
+          WHERE g.genres_id
+                in (SELECT genres_id
+                    FROM movies_genres_mapping
+                    where movies_id = #{id})
+          GROUP BY m.movie_id
+                 , lm_locale.title
+                 , lm_default.title
+          LIMIT #{page} OFFSET #{size};
+     </select>
+
+     <!--추천 영화 조회 총합-->
+     <select id="recommendedMovieListTotal">
+          SELECT COUNT(DISTINCT m.movie_id) AS totalCount
+          FROM movies m
+               LEFT JOIN movie.localized_movies lm_locale
+                    ON   m.movie_id = lm_locale.movies_id
+                    AND  lm_locale.delete_date IS NULL
+                    AND  lm_locale.language_code = #{language}
+               LEFT JOIN movie.localized_movies lm_default
+                    ON   m.movie_id = lm_default.movies_id
+                    AND  lm_default.delete_date IS NULL
+                    AND  lm_default.language_code = 'en'
+               LEFT JOIN movies_genres_mapping mgm
+                    ON   m.movie_id = mgm.movies_id
+               LEFT JOIN genres g
+                    ON   mgm.genres_id = g.genres_id
+                    AND  g.delete_date IS NULL
+          WHERE g.genres_id
+                in (SELECT genres_id
+                    FROM movies_genres_mapping
+                    where movies_id = #{id});
+     </select>
 </mapper>

@@ -1,4 +1,4 @@
-# 프로젝트 사용법
+# movies api
 
 ## 폴더 구조
 ```sh
@@ -41,3 +41,9 @@
 
 ### utils
 - 접미사로 Util
+
+
+## 추가 하고 싶은 기능
+- 공통 request, response
+- 공통 status
+- 로그인, 회원가입

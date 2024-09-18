@@ -1,6 +1,7 @@
 package com.example.movie.controller;
 
 import com.example.movie.dto.response.MovieDetailDtoRes;
+import com.example.movie.dto.response.RecommendedMovieListDtoRes;
 import com.example.movie.service.MovieService;
 import com.example.movie.utils.LanguageUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,5 +22,16 @@ public class MovieController {
     public MovieDetailDtoRes getMovieDetail(@PathVariable Integer id, @RequestParam(required = false, defaultValue = "en") String language) {
         LanguageUtil languageUtil = new LanguageUtil();
         return movieService.movieDetail(id, languageUtil.hasServiceLanguage(language));
+    }
+
+    @GetMapping(value = "/recommended/list/{id}")
+    @Operation(summary = "추천 영화 리스트 조회",description = "영화의 기본키를 기반으로 한다 언어의 기본값 en")
+    public RecommendedMovieListDtoRes getRecommendedMovieList(@PathVariable Integer id,
+                                                              @RequestParam(required = false, defaultValue = "en") String language,
+                                                              @RequestParam(required = false, defaultValue = "1") int page,
+                                                              @RequestParam(required = false, defaultValue = "5") int size)
+    {
+        LanguageUtil languageUtil = new LanguageUtil();
+        return movieService.recommendedMovieList(id, languageUtil.hasServiceLanguage(language), page, size);
     }
 }
