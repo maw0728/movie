@@ -2,7 +2,6 @@ package com.example.movie.service;
 
 import com.example.movie.dto.response.GenresDtoRes;
 import com.example.movie.mapper.GenresMapper;
-import com.example.movie.utils.LanguageUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
